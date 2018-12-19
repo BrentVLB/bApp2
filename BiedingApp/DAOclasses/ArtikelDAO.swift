@@ -11,19 +11,22 @@ import Firebase
 class ArtikelDAO{
     
     let db: Firestore
-    
+    var registListeners: [ListenerRegistration]
+    var bidListeners: [ListenerRegistration]
     var listArtBids: [BidModel] = []
     
     init()
     {
         db = Firestore.firestore()
+        registListeners = [ListenerRegistration]()
+        bidListeners = [ListenerRegistration]()
     }
     
     func getAllArticles(listener: ArticleProtocol)
     {
         var articleList: [ArticleModel] = []
         
-        db.collection("artikels").getDocuments()
+        let listenerReg: ListenerRegistration =  db.collection("artikels").addSnapshotListener
             { (querySnapshot, err) in
                 if let err = err
                 {
@@ -32,6 +35,7 @@ class ArtikelDAO{
                 }
                 else
                 {
+                    articleList = []
                     for doc in querySnapshot!.documents
                     {
                         var tempArt = ArticleModel()
@@ -49,43 +53,64 @@ class ArtikelDAO{
                             minB = 0 }
                         tempArt.setMinBid(newBid: minB)
                         
-                    self.db.collection("artikels").document(doc.documentID).collection("bids").getDocuments(){(querySnapshot, erro) in
-                            if let erro = erro
-                            {
-                                print("hier geen bids")
-                            }
-                            else
-                            {
-                                for b in querySnapshot!.documents
-                                {
-                                    var tempBid = BidModel()
-                                    tempBid.setId(newId: b.documentID)
-                                    tempBid.setDate(newD: b.data()["date"] as! Date)
-                                    tempBid.setMemberId(newM: b.data()["memberId"] as! String)
-                                    
-                                    var bidA:Double
-                                    let num:CFNumber = b.data()["bidAmount"] as! CFNumber
-                                    var bidFloat :Float = 0
-                                    if CFNumberGetValue(num, CFNumberType.floatType,&bidFloat ) {
-                                        bidA = Double(bidFloat) } else {
-                                        bidA = 0 }
-                                    tempBid.setBidAmount(newB: bidA)
-                                    //tempArt.addBid(bidToAdd: tempBid)
-                                    listener.updateArticlesWithBids(artToUpdate: tempArt, bidToAdd: tempBid)
-                                }
-                            }
-                        }
+                    
                        articleList.append(tempArt)
+                        print(articleList.count)
                     }
                     listener.getAllArticlesCompl(artList: articleList, error: "")
                 }
                 
         }
+        registListeners.append(listenerReg)
     }
     
-    func getArticleById()
+    
+    func updateWithBids(listToUpdate: [ArticleModel], listener: ArticleProtocol)
     {
-        
+       for artikel in listToUpdate
+       {
+        let bidListener: ListenerRegistration = db.collection("artikels").document(artikel.getId()).collection("bids").addSnapshotListener{(querySnapshot, erro) in
+            if let erro = erro
+            {
+                let emptyArt = ArticleModel()
+                listener.updateArticlesWithBids(articleToUpdate: emptyArt, error: erro.localizedDescription)
+            }
+            else
+            {
+                for b in querySnapshot!.documents
+                {
+                    var tempBid = BidModel()
+                    tempBid.setId(newId: b.documentID)
+                    tempBid.setDate(newD: b.data()["date"] as! Date)
+                    tempBid.setMemberId(newM: b.data()["memberId"] as! String)
+                    
+                    var bidA:Double
+                    let num:CFNumber = b.data()["bidAmount"] as! CFNumber
+                    var bidFloat :Float = 0
+                    if CFNumberGetValue(num, CFNumberType.floatType,&bidFloat ) {
+                        bidA = Double(bidFloat) } else {
+                        bidA = 0 }
+                    tempBid.setBidAmount(newB: bidA)
+                    artikel.addBid(bidToAdd: tempBid)
+                    
+                }
+                listener.updateArticlesWithBids(articleToUpdate: artikel, error: "")
+                //per artikel apart updaten
+            }
+        }
+        bidListeners.append(bidListener)
+        }
+
+    }
+    
+  func removeListeners()
+    {
+        registListeners.forEach({registListener in registListener.remove()})
+    }
+    
+    func removeBidLiseners()
+    {
+        bidListeners.forEach({bidListener in bidListener.remove()})
     }
     
     
@@ -93,5 +118,5 @@ class ArtikelDAO{
 
 protocol ArticleProtocol{
     func getAllArticlesCompl(artList: [ArticleModel], error: String?)
-    func updateArticlesWithBids(artToUpdate: ArticleModel, bidToAdd: BidModel)
+    func updateArticlesWithBids(articleToUpdate: ArticleModel, error: String?)
 }
