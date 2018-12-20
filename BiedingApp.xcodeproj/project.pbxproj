@@ -8,6 +8,8 @@
 
 /* Begin PBXBuildFile section */
 		18F17586F768070A127ABB96 /* Pods_BiedingApp.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5F01657617501E90EE2AD68A /* Pods_BiedingApp.framework */; };
+		3F12894921CB87E300F9F825 /* ArticleDetailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3F12894821CB87E300F9F825 /* ArticleDetailViewController.swift */; };
+		3F12894B21CB96BE00F9F825 /* BidDAO.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3F12894A21CB96BE00F9F825 /* BidDAO.swift */; };
 		3F170F4A21B7BF7B00317C81 /* AddUserVal.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3F170F4921B7BF7B00317C81 /* AddUserVal.swift */; };
 		3F170F4D21B7C0C500317C81 /* Login.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3F170F4C21B7C0C500317C81 /* Login.swift */; };
 		3F170F4F21B7CE6D00317C81 /* logUserVal.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3F170F4E21B7CE6D00317C81 /* logUserVal.swift */; };
@@ -29,6 +31,8 @@
 
 /* Begin PBXFileReference section */
 		12F3923FA99888F2CE4AF4F8 /* Pods-BiedingApp.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-BiedingApp.debug.xcconfig"; path = "Pods/Target Support Files/Pods-BiedingApp/Pods-BiedingApp.debug.xcconfig"; sourceTree = "<group>"; };
+		3F12894821CB87E300F9F825 /* ArticleDetailViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ArticleDetailViewController.swift; sourceTree = "<group>"; };
+		3F12894A21CB96BE00F9F825 /* BidDAO.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BidDAO.swift; sourceTree = "<group>"; };
 		3F170F4921B7BF7B00317C81 /* AddUserVal.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddUserVal.swift; sourceTree = "<group>"; };
 		3F170F4C21B7C0C500317C81 /* Login.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Login.swift; sourceTree = "<group>"; };
 		3F170F4E21B7CE6D00317C81 /* logUserVal.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = logUserVal.swift; sourceTree = "<group>"; };
@@ -89,6 +93,7 @@
 			children = (
 				3F2F58DC21B91607006B0FD7 /* MemberDAO.swift */,
 				3F4DBD5921C10440007C2FDD /* ArtikelDAO.swift */,
+				3F12894A21CB96BE00F9F825 /* BidDAO.swift */,
 			);
 			path = DAOclasses;
 			sourceTree = "<group>";
@@ -127,6 +132,7 @@
 				3F48AE7521AE8ABB00266A55 /* rootViewController.swift */,
 				3F48AE7921AE955900266A55 /* newUserViewController.swift */,
 				3F4DBD5721C0FC45007C2FDD /* ItemsTableViewController.swift */,
+				3F12894821CB87E300F9F825 /* ArticleDetailViewController.swift */,
 			);
 			path = BiedingApp;
 			sourceTree = "<group>";
@@ -306,6 +312,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				3F12894B21CB96BE00F9F825 /* BidDAO.swift in Sources */,
 				3F2F58DD21B91607006B0FD7 /* MemberDAO.swift in Sources */,
 				3F170F4F21B7CE6D00317C81 /* logUserVal.swift in Sources */,
 				3F4DBD5821C0FC45007C2FDD /* ItemsTableViewController.swift in Sources */,
@@ -316,6 +323,7 @@
 				3F170F4D21B7C0C500317C81 /* Login.swift in Sources */,
 				3F2F58D621B90EA6006B0FD7 /* MemberModel.swift in Sources */,
 				3F48AE7A21AE955900266A55 /* newUserViewController.swift in Sources */,
+				3F12894921CB87E300F9F825 /* ArticleDetailViewController.swift in Sources */,
 				3F4DBD5A21C10440007C2FDD /* ArtikelDAO.swift in Sources */,
 				3F48AE6121AE888600266A55 /* AppDelegate.swift in Sources */,
 				3F2F58DA21B90EC2006B0FD7 /* BidModel.swift in Sources */,

@@ -55,14 +55,24 @@ class ArticleModel{
     
     func addBid(bidToAdd: BidModel)
     {
-        for b in self.bids
+        if(self.bids.isEmpty)
         {
-            if(b.getId() != bidToAdd.getId())
-            {
-                self.bids.append(bidToAdd)
-                
-            }
+            self.bids.append(bidToAdd)
         }
+        else
+        {
+            for b in self.bids
+            {
+                if(b.getId() != bidToAdd.getId())
+                {
+                    self.bids.append(bidToAdd)
+                    
+                }
+            }
+            
+        }
+        
+        
         
     }
     

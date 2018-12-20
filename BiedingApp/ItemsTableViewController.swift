@@ -59,7 +59,7 @@ class ItemsTableViewController: UITableViewController, ArticleProtocol {
     
     func updateArticlesWithBids(articleToUpdate: ArticleModel, error: String?)
      {
-        print("hey")
+       
         if(error == "")
         {
             articleList.first(where: {articleInList in
@@ -71,10 +71,14 @@ class ItemsTableViewController: UITableViewController, ArticleProtocol {
             for art in articleList
             {
                 
-                if(art.getId() != articleToUpdate.getId() && !found)
+                if(art.getId() == articleToUpdate.getId())
                 {
-                    r = r + 1
+                    
                     found = true
+                }
+                if(!found)
+                {
+                    r =  r + 1
                 }
             }
             let indexPath = IndexPath(item: r, section: 0)
@@ -102,6 +106,7 @@ class ItemsTableViewController: UITableViewController, ArticleProtocol {
                         hoogsteBod = b.getBid()
                     }
                 }
+                 cell.detailTextLabel?.text = "highest bid = " + String(hoogsteBod)
             }
             
         }
@@ -110,8 +115,13 @@ class ItemsTableViewController: UITableViewController, ArticleProtocol {
         return cell
     }
  
-
-  
+    override func tableView(_ tableView: UITableView, accessoryButtonTappedForRowWith indexPath: IndexPath) {
+        //aanmaken viewcontroller met bijhorende view
+        let vc = self.storyboard?.instantiateViewController(withIdentifier:
+            "ArticleDetailVC") as! ArticleDetailViewController
+        vc.setUserAndArticle(cUser: self.loggedUser, cArticle: articleList[indexPath.row])
+        self.navigationController?.pushViewController(vc, animated: true)
+    }
 
   
 
