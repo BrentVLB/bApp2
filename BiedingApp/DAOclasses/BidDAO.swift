@@ -54,8 +54,26 @@ class BidDAO
         }
         bidListeners.append(bidListener)
     }
+    
+    
+    func addBidToArticle(articleToUpdate: ArticleModel, bidToAdd: BidModel, listener: BidProtocol)
+    {
+      
+        var ref: DocumentReference? = nil
+        ref = db.collection("artikels").document(articleToUpdate.getId()).collection("bids").addDocument(data: [
+            "date": bidToAdd.getDate(),
+            "memberId":bidToAdd.getMemberId(),
+            "bidAmount":bidToAdd.getBid()
+        ]) { err in
+            if let err = err {
+                listener.bidAddCompleted(error: err.localizedDescription)
+            } else {
+               listener.bidAddCompleted(error: "Joepie")
+            }
+        }    }
 }
 
 protocol BidProtocol{
     func getRealtimeBidsCompl(art: ArticleModel, error: String?)
+    func bidAddCompleted(error: String?)
 }

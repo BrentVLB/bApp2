@@ -9,6 +9,8 @@
 import UIKit
 
 class ArticleDetailViewController: UIViewController, BidProtocol {
+    
+    
    
     
 
@@ -46,11 +48,43 @@ class ArticleDetailViewController: UIViewController, BidProtocol {
             
         }
         labelCurrentBod.text = String(hoogsteBod)
+        setStepperValues()
         var bDAO = BidDAO()
         bDAO.getBidsforArticle(artToListen: currentArticle, listener: self)
     }
     
-
+    func setStepperValues()
+    {
+        stepperBids.minimumValue = hoogsteBod + 20
+        if(hoogsteBod == -1)
+        {
+            stepperBids.maximumValue = currentArticle.getminBid() * 100
+        }
+        else
+        {
+            stepperBids.maximumValue = hoogsteBod * 100
+        }
+        
+    }
+    
+    
+    @IBAction func changeStepper(_ sender: UIStepper)
+    {
+        labelCurrentBod.text = String(sender.value)
+    }
+    
+    @IBAction func addBidToArticle(_ sender: UIButton)
+    {
+        var bToAdd = BidModel()
+        var bDAO = BidDAO()
+        bToAdd.setDate(newD: Date())
+        bToAdd.setMemberId(newM: currentUser.getId())
+        bToAdd.setBidAmount(newB: stepperBids.value)
+        bDAO.addBidToArticle(articleToUpdate: currentArticle, bidToAdd: bToAdd, listener: self)
+    }
+    
+    
+    
     func setUserAndArticle(cUser: MemberModel, cArticle: ArticleModel)
     {
         self.currentUser = cUser
@@ -94,9 +128,13 @@ class ArticleDetailViewController: UIViewController, BidProtocol {
                 labelHoogsteBod.text = String(hoogsteBod)
                 
             }
-            labelCurrentBod.text = String(hoogsteBod)
+            setStepperValues()
+            labelCurrentBod.text = String(stepperBids.value)
             
         }
     }
-
+    
+    func bidAddCompleted(error: String?) {
+        print(error)
+    }
 }
